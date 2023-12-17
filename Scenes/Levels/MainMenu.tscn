@@ -1,0 +1,54 @@
+[gd_scene load_steps=3 format=3 uid="uid://meung0ejhvys"]
+
+[ext_resource type="Script" path="res://Scripts/MainMenu.gd" id="1_wgnc3"]
+[ext_resource type="FontFile" uid="uid://yphuq3blqhuj" path="res://Font/WOODCUTTER DRIPPING CLASSIC FONT.ttf" id="2_5c4uh"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wgnc3")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="."]
+modulate = Color(0.972549, 0.984314, 0.854902, 1)
+layout_mode = 2
+offset_left = -29.0
+offset_top = 75.0
+offset_right = 619.0
+offset_bottom = 159.0
+theme_override_fonts/normal_font = ExtResource("2_5c4uh")
+theme_override_font_sizes/normal_font_size = 50
+bbcode_enabled = true
+text = "[center]Life is Burning Fast[/center]"
+
+[node name="ButtonPlay" type="Button" parent="."]
+layout_mode = 2
+offset_left = 141.0
+offset_top = 258.0
+offset_right = 376.0
+offset_bottom = 320.0
+theme_override_colors/font_color = Color(0.972549, 0.984314, 0.854902, 1)
+theme_override_fonts/font = ExtResource("2_5c4uh")
+text = "
+PLAY
+
+"
+
+[node name="ButtonQuit" type="Button" parent="."]
+layout_mode = 2
+offset_left = 141.0
+offset_top = 370.0
+offset_right = 376.0
+offset_bottom = 432.0
+theme_override_colors/font_color = Color(0.972549, 0.984314, 0.854902, 1)
+theme_override_fonts/font = ExtResource("2_5c4uh")
+text = "
+QUIT
+
+"
+
+[connection signal="pressed" from="ButtonPlay" to="." method="_on_button_play_pressed"]
+[connection signal="pressed" from="ButtonQuit" to="." method="_on_button_quit_pressed"]

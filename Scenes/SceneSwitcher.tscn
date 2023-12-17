@@ -1,0 +1,79 @@
+[gd_scene load_steps=8 format=3 uid="uid://c0hu3osb1rsc4"]
+
+[ext_resource type="Script" path="res://Scripts/SceneSwitcher.gd" id="1_qp2ll"]
+[ext_resource type="PackedScene" uid="uid://meung0ejhvys" path="res://Scenes/Levels/MainMenu.tscn" id="2_pxos8"]
+[ext_resource type="Script" path="res://Scripts/sfxPlayers.gd" id="3_q42a6"]
+[ext_resource type="AudioStream" uid="uid://dgvxwnt0h4uy2" path="res://Audio/Music/MusicLevelLifeIsBurningFast.wav" id="3_xvep1"]
+
+[sub_resource type="Animation" id="Animation_32mjn"]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_g3x0w"]
+resource_name = "fade_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0, 0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2s14g"]
+_data = {
+"fade_in": SubResource("Animation_32mjn"),
+"fade_out": SubResource("Animation_g3x0w")
+}
+
+[node name="SceneSwitcher" type="Node"]
+script = ExtResource("1_qp2ll")
+
+[node name="CanvasMainMenu" type="CanvasLayer" parent="."]
+
+[node name="MainMenu" parent="CanvasMainMenu" instance=ExtResource("2_pxos8")]
+
+[node name="CanvasTransition" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasTransition"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../CanvasTransition")
+libraries = {
+"": SubResource("AnimationLibrary_2s14g")
+}
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_xvep1")
+volume_db = -5.0
+autoplay = true
+
+[node name="sfxPlayers" type="Node" parent="."]
+script = ExtResource("3_q42a6")
+count = 5
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="sfxPlayers"]
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]

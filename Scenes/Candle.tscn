@@ -1,0 +1,77 @@
+[gd_scene load_steps=9 format=3 uid="uid://lrac7uvfwb28"]
+
+[ext_resource type="Script" path="res://Scripts/CharacterController.gd" id="1_hx22l"]
+[ext_resource type="Texture2D" uid="uid://dvtxccjct60bi" path="res://Sprites/Anims/CandleIdleAnimation-Sheet.png" id="2_iup43"]
+[ext_resource type="Texture2D" uid="uid://i4ts6ryttmcl" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="3_ot0pu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bkbgm"]
+atlas = ExtResource("2_iup43")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k7opi"]
+atlas = ExtResource("2_iup43")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_yxbj7"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bkbgm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k7opi")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 2.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4h7oa"]
+size = Vector2(29, 57)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ec236"]
+radius = 147.014
+
+[node name="CharacterBody2D" type="CharacterBody2D" groups=["Player"]]
+script = ExtResource("1_hx22l")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_yxbj7")
+animation = &"idle"
+frame_progress = 0.252982
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-0.5, 5.5)
+shape = SubResource("RectangleShape2D_4h7oa")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(1.5, 1.5)
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(-2, -10)
+color = Color(1, 1, 0.827451, 1)
+texture = ExtResource("3_ot0pu")
+texture_scale = 2.5
+
+[node name="PointLightBurn" type="PointLight2D" parent="."]
+position = Vector2(-2, -10)
+enabled = false
+color = Color(1, 0.101961, 0, 1)
+energy = 2.0
+texture = ExtResource("3_ot0pu")
+texture_scale = 0.5
+
+[node name="BurnArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BurnArea"]
+position = Vector2(0, -13)
+shape = SubResource("CircleShape2D_ec236")
+
+[node name="LightArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LightArea"]
+position = Vector2(0, -13)
+shape = SubResource("CircleShape2D_ec236")
+
+[connection signal="area_entered" from="LightArea" to="." method="_on_light_area_area_entered"]
+[connection signal="area_exited" from="LightArea" to="." method="_on_light_area_area_exited"]

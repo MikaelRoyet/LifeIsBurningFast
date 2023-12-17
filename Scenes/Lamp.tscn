@@ -1,0 +1,49 @@
+[gd_scene load_steps=8 format=3 uid="uid://d2oxvv6aq1rre"]
+
+[ext_resource type="Texture2D" uid="uid://i4ts6ryttmcl" path="res://Sprites/2d_lights_and_shadows_neutral_point_light.webp" id="1_mdgvr"]
+[ext_resource type="Script" path="res://Scripts/Lamp.gd" id="1_vln52"]
+[ext_resource type="Texture2D" uid="uid://cxhydf8qdqmv1" path="res://Sprites/LampNoLit.png" id="2_mt75q"]
+[ext_resource type="PackedScene" uid="uid://bd5uh5tqnl1wp" path="res://Scenes/Particles/flame_particles.tscn" id="4_am3l3"]
+[ext_resource type="PackedScene" uid="uid://mm5d5iqq6u32" path="res://Scenes/Particles/smoke_particle.tscn" id="5_5e2e4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bwc58"]
+radius = 32.249
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_e4jds"]
+radius = 299.082
+
+[node name="Lamp" type="Area2D" groups=["Lamp"]]
+script = ExtResource("1_vln52")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bwc58")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_mt75q")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+color = Color(1, 1, 0.733333, 1)
+texture = ExtResource("1_mdgvr")
+texture_scale = 3.0
+
+[node name="PointLightRed" type="PointLight2D" parent="."]
+position = Vector2(-2, -10)
+color = Color(1, 0.101961, 0, 1)
+energy = 1.5
+texture = ExtResource("1_mdgvr")
+texture_scale = 0.5
+
+[node name="Light_area" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Light_area"]
+shape = SubResource("CircleShape2D_e4jds")
+
+[node name="Particles" type="Node2D" parent="."]
+
+[node name="FlameParticles" parent="Particles" instance=ExtResource("4_am3l3")]
+
+[node name="SmokeParticle" parent="Particles" instance=ExtResource("5_5e2e4")]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="area_entered" from="Light_area" to="." method="_on_light_area_area_entered"]
+[connection signal="area_exited" from="Light_area" to="." method="_on_light_area_area_exited"]

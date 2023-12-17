@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://dph3kk7bb6306"]
+
+[ext_resource type="Script" path="res://Scripts/GhostDark.gd" id="1_eg4ck"]
+[ext_resource type="Texture2D" uid="uid://dl81kmoalkibn" path="res://Sprites/ghostDarkPO.png" id="2_pd8ho"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8hh31"]
+radius = 13.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_317mt"]
+radius = 261.002
+
+[node name="GhostDark" type="Area2D" groups=["GhostDark"]]
+script = ExtResource("1_eg4ck")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_8hh31")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_pd8ho")
+
+[node name="VisionField" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionField"]
+shape = SubResource("CircleShape2D_317mt")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered" flags=18]
+[connection signal="area_entered" from="VisionField" to="." method="_on_vision_field_area_entered"]
+[connection signal="area_exited" from="VisionField" to="." method="_on_vision_field_area_exited"]
+[connection signal="body_entered" from="VisionField" to="." method="_on_vision_field_body_entered" flags=18]
+[connection signal="body_exited" from="VisionField" to="." method="_on_vision_field_body_exited" flags=18]
